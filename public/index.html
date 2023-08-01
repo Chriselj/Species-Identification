@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Rest of your head content -->
+  <title>Trail Camera Species Identification</title>
+  <!-- Add your CSS styles here -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #008000; /* Forest green */
+      word-wrap: break-word;
+      white-space: normal;
+    }
+
+    .loading-indicator {
+      display: none;
+      text-align: center;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .identification-form {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f8fff8; /* Light green */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+
+    .identification-form img {
+      max-width: 100%;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .species-select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      appearance: none;
+      background-color: #e0f8e0; /* Pale green */
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .species-select option {
+      font-weight: normal;
+    }
+
+    .submit-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #006400; /* Dark green */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .submit-button:hover {
+      background-color: #004000; /* Darker green on hover */
+    }
+
+    .identification-feedback {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #008000; /* Forest green */
+    }
+
+    .next-button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #2e8b57; /* Sea green */
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .next-button:hover {
+      background-color: #1c6330; /* Darker sea green on hover */
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Trail Camera Species Identification</h1>
+  <div class="identification-form">
+    <!-- Step 1: View Image -->
+<div id="loading-indicator" class="loading-indicator">
+  Loading...
+</div>
+
+<img id="trail-camera-image" src="images/Irvine Ranch Conservancy.png" alt="Trail Camera Image">
+
+<!-- Element to show messages to the user -->
+<div id="message"></div>
+
+    <!-- Step 2: Identify Species -->
+    <form onsubmit="submitIdentification(event)">
+      <select class="species-select" id="species-selection">
+        <option value="">Select a species</option>
+        <option value="Coyote">Coyote</option>
+        <option value="Bobcat">Bobcat</option>
+        <option value="Mountain Lion">Mountain Lion</option>
+        <option value="Rabbit">Rabbit</option>
+        <option value="Mule Deer">Mule Deer</option>
+        <option value="Gray Fox">Gray Fox</option>
+        <option value="Other">Other</option>
+        <option value="Striped Skunk">Striped Skunk</option>
+        <option value="Opossum">Opossum</option>
+        <option value="Raccoon">Raccoon</option>
+        <option value="Turkey Vulture">Turkey Vulture</option>
+        <!-- Add more species options as needed -->
+      </select>
+      <button class="submit-button" type="submit">Submit Identification</button>
+    </form>
+    <div class="identification-feedback" id="identification-feedback"></div>
+    <button class="next-button" onclick="nextImage()">Next Image</button>
+  </div>
+
+  <!-- Add your JavaScript code here -->
+  <!-- Add your JavaScript code here -->
+<!-- Add your JavaScript code here -->
+<script>
+// Assuming images are in the "images" subdirectory of the public directory
+const imagesDirectory = 'images';
+
+// Function to update the image source with a random image
+function updateRandomImage() {
+  const loadingIndicator = document.getElementById('loading-indicator');
+  loadingIndicator.style.display = 'block'; // Display the loading indicator
+
+  // Add a fetch request to check the number of images in the "images" folder
+  fetch('/getNumberOfImages')
+    .then(response => response.json())
+    .then(data => {
+      const numberOfImages = data.numberOfImages;
+      if (numberOfImages === 0) {
+        // No more images in the "images" folder, display the message
+        console.log('Currently no images left to process.');
+        loadingIndicator.style.display = 'none'; // Hide the loading indicator
+        const imageElement = document.getElementById('trail-camera-image');
+        imageElement.src = ''; // Clear the image source to remove any previous image
+        const identificationFeedback = document.getElementById('identification-feedback');
+        identificationFeedback.textContent = 'No more images to display.';
+        return;
+      }
+
+      // If there are images available, proceed to fetch a random image
+      fetch('/getRandomImage')
+        .then(response => response.json())
+        .then(data => {
+          if (data.message && data.message === 'Currently no images left to process.') {
+            // No images left to process, show a message or perform any action you want
+            console.log('Currently no images left to process.');
+            loadingIndicator.style.display = 'none'; // Hide the loading indicator
+            return;
+          }
+
+          const randomImageFilename = data.randomImageFilename;
+          const decodedRandomImageFilename = decodeURIComponent(randomImageFilename);
+          const imageElement = document.getElementById('trail-camera-image');
+
+          imageElement.onload = () => {
+            // Image has been loaded, hide the loading indicator
+            loadingIndicator.style.display = 'none';
+          };
+
+         if (numberOfImages === 1) {
+  		// If there's only one image left, remove the current image from the list of processed images
+  		processedImageFilenames = processedImageFilenames.filter(imageFilename => imageFilename !== randomImageFilename);
+		}
+
+          // Assuming images are in the "images" subdirectory
+          imageElement.src = `images/${decodedRandomImageFilename}`;
+        })
+        .catch(error => {
+          console.error('Error fetching random image:', error);
+          // In case of an error, hide the loading indicator
+          loadingIndicator.style.display = 'none';
+        });
+    })
+    .catch(error => {
+      console.error('Error checking number of images:', error);
+      // In case of an error, hide the loading indicator
+      loadingIndicator.style.display = 'none';
+    });
+}
+
+
+
+
+  
+  // Object to store the vote count for each species
+  let voteCounts = {};
+
+  // Function to handle the "Submit Identification" button click
+    function submitIdentification(event) {
+      event.preventDefault();
+      const speciesSelection = document.getElementById('species-selection').value;
+      const feedbackElement = document.getElementById('identification-feedback');
+
+      if (speciesSelection === '') {
+        feedbackElement.textContent = 'Please select a species before submitting.';
+      } else {
+        feedbackElement.textContent = `You identified the species as: ${speciesSelection}.`;
+
+        // Reset the selection after submission
+        document.getElementById('species-selection').value = '';
+
+        // Submit the identification
+        const imageFilename = document.getElementById('trail-camera-image').src.split('/').pop();
+        const data = { imageFilename, species: speciesSelection };
+
+        fetch('/submitIdentification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        })
+          .then(response => response.json())
+          .then(responseData => {
+            if (responseData.success) {
+              feedbackElement.textContent = 'Observation submitted successfully.';
+              voteCounts[responseData.species] = responseData.voteCount; // Update the vote count for the species
+              updateRandomImage(); // Update the image to show the next random image
+            } else {
+              feedbackElement.textContent = 'Failed to submit observation. Please try again.';
+            }
+          })
+          .catch(error => {
+            console.error('Error submitting identification:', error);
+            feedbackElement.textContent = 'An error occurred while submitting. Please try again later.';
+          });
+      }
+    }
+
+
+  // Function to handle the "Next Image" button click
+  function nextImage() {
+    updateRandomImage();
+    const feedbackElement = document.getElementById('identification-feedback');
+    feedbackElement.textContent = ''; // Clear identification feedback when showing the next image.
+  }
+
+  // Call the function to update the image when the page loads
+  updateRandomImage();
+
+
+</script>
+
+
+</body>
+</html>

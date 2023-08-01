@@ -1,0 +1,17 @@
+{
+  "name": "my-web-app",
+  "version": "1.0.0",
+  "description": "Citizen Science Animal Identification App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Eljenholm",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.8.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.5.2"
+  }
+}

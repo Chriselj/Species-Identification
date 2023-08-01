@@ -1,0 +1,10 @@
+# Use the official MySQL Docker image
+FROM mysql:latest
+
+# Set the root password for MySQL (change it to your desired password)
+ENV MYSQL_ROOT_PASSWORD=IRC2022irc3A
+
+# Create a new database and user for your application
+ENV MYSQL_DATABASE=trail_camera_db
+ENV MYSQL_USER=celjenholm
+ENV MYSQL_PASSWORD=IRC2022irc3A
