@@ -4,6 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 
+// Serve static files from the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 // Apply rate-limiting middleware to all routes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -105,13 +109,13 @@ pool.getConnection((error, connection) => {
 testConnection(); // Test the connection on application startup
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(publicDirectory, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // API endpoint to get the number of images in the "images" folder
 // Function to get the number of images in the "images" directory using async/await
 async function getNumberOfImages() {
-  const imagesDirectory = path.join(__dirname, 'public/images');
+ 
 
   try {
     const files = await fs.promises.readdir(imagesDirectory);
@@ -139,7 +143,7 @@ app.get('/getNumberOfImages', async (req, res) => {
 
 // API endpoint to get a random image filename
 app.get('/getRandomImage', (req, res) => {
-  const imagesDirectory = path.join(__dirname, 'public/images');
+ 
 
   fs.readdir(imagesDirectory, (err, files) => {
     if (err) {
