@@ -195,7 +195,7 @@ function updateRandomImage() {
 		}
 
           // Assuming images are in the "images" subdirectory
-          imageElement.src = `images/${decodedRandomImageFilename}`;
+          imageElement.src = `${imagesDirectory}/${decodedRandomImageFilename}`;
         })
         .catch(error => {
           console.error('Error fetching random image:', error);
