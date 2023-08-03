@@ -157,6 +157,7 @@ function updateRandomImage() {
   fetch('/getNumberOfImages')
     .then(response => response.json())
     .then(data => {
+      console.log('Response from /getNumberOfImages:', data);
       const numberOfImages = data.numberOfImages;
       if (numberOfImages === 0) {
         // No more images in the "images" folder, display the message
