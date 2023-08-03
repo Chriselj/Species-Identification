@@ -86,7 +86,8 @@ app.post('/submitIdentification', async (req, res) => {
 const publicDirectory = path.join(__dirname, 'public');
 app.use(express.static(publicDirectory));
 
-const imagesDirectory = path.join (publicDirectory,'images');
+const imagesDirectory = path.join(__dirname, 'images');
+
 
 const pool = mysql.createPool({
   host: '10.22.16.136', // Use the IP address of the MySQL container
