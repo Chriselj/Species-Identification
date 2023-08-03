@@ -134,6 +134,8 @@ async function getNumberOfImages() {
 
 // API endpoint to get the number of images in the "images" folder
 app.get('/getNumberOfImages', async (req, res) => {
+  console.log('Received request to /getNumberOfImages');
+  
   const numberOfImages = await getNumberOfImages();
   console.log('Number of images:', numberOfImages);
   res.json({ numberOfImages });
