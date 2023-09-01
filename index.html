@@ -113,7 +113,7 @@
   Loading...
 </div>
 
-<img id="trail-camera-image" src="images/Irvine Ranch Conservancy.png" alt="Trail Camera Image">
+<img id="trail-camera-image" src="public/images/Irvine Ranch Conservancy.png" alt="Trail Camera Image">
 
 <!-- Element to show messages to the user -->
 <div id="message"></div>
@@ -146,7 +146,7 @@
 <!-- Add your JavaScript code here -->
 <script>
 // Assuming images are in the "images" subdirectory of the public directory
-const imagesDirectory = 'images';
+const imagesDirectory = 'public/images';
 
 // Function to update the image source with a random image
 function updateRandomImage() {
@@ -195,7 +195,7 @@ function updateRandomImage() {
 		}
 
           // Assuming images are in the "images" subdirectory
-          imageElement.src = `images/${decodedRandomImageFilename}`;
+          imageElement.src = `public/images/${decodedRandomImageFilename}`;
         })
         .catch(error => {
           console.error('Error fetching random image:', error);
