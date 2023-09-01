@@ -145,8 +145,8 @@
   <!-- Add your JavaScript code here -->
 <!-- Add your JavaScript code here -->
 <script>
-// Assuming images are in the "images" subdirectory
-const imagesDirectory = 'public/images';
+// Assuming images are in the "images" subdirectory of the public directory
+const imagesDirectory = 'images';
 
 // Function to update the image source with a random image
 function updateRandomImage() {
@@ -157,7 +157,6 @@ function updateRandomImage() {
   fetch('/getNumberOfImages')
     .then(response => response.json())
     .then(data => {
-      console.log('Response from /getNumberOfImages:', data);
       const numberOfImages = data.numberOfImages;
       if (numberOfImages === 0) {
         // No more images in the "images" folder, display the message
@@ -196,7 +195,7 @@ function updateRandomImage() {
 		}
 
           // Assuming images are in the "images" subdirectory
-          imageElement.src = `${imagesDirectory}/${decodedRandomImageFilename}`;
+          imageElement.src = `images/${decodedRandomImageFilename}`;
         })
         .catch(error => {
           console.error('Error fetching random image:', error);
