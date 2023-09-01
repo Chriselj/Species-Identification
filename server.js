@@ -4,24 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 
-// Serve static files from the public folder
-app.use(express.static(path.join(__dirname, 'public')));
-
-
-// Apply rate-limiting middleware to all routes
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limit each IP to 100 requests per windowMs
-});
-
-app.use(limiter);
-
 // Global variable to track processed image filenames
 let processedImageFilenames = [];
-const publicDirectory = path.join(__dirname, 'public');
-app.use(express.static(publicDirectory));
-
-const imagesDirectory = path.join(__dirname, 'public/images');
 
 // Add express.json() middleware to parse request bodies as JSON
 app.use(express.json());
@@ -87,8 +71,10 @@ app.post('/submitIdentification', async (req, res) => {
 
 
 
+const publicDirectory = path.join(__dirname, 'public');
+app.use(express.static(publicDirectory));
 
-
+const imagesDirectory = path.join (publicDirectory,'images');
 
 const pool = mysql.createPool({
   host: '10.22.16.136', // Use the IP address of the MySQL container
@@ -111,13 +97,13 @@ pool.getConnection((error, connection) => {
 testConnection(); // Test the connection on application startup
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(publicDirectory, 'index.html'));
 });
 
 // API endpoint to get the number of images in the "images" folder
 // Function to get the number of images in the "images" directory using async/await
 async function getNumberOfImages() {
- 
+  const imagesDirectory = path.join(__dirname, 'public/images');
 
   try {
     const files = await fs.promises.readdir(imagesDirectory);
@@ -136,8 +122,6 @@ async function getNumberOfImages() {
 
 // API endpoint to get the number of images in the "images" folder
 app.get('/getNumberOfImages', async (req, res) => {
-  console.log('Received request to /getNumberOfImages');
-  
   const numberOfImages = await getNumberOfImages();
   console.log('Number of images:', numberOfImages);
   res.json({ numberOfImages });
@@ -147,7 +131,7 @@ app.get('/getNumberOfImages', async (req, res) => {
 
 // API endpoint to get a random image filename
 app.get('/getRandomImage', (req, res) => {
- 
+  const imagesDirectory = path.join(__dirname, 'public/images');
 
   fs.readdir(imagesDirectory, (err, files) => {
     if (err) {
