@@ -18,6 +18,10 @@ app.use(limiter);
 
 // Global variable to track processed image filenames
 let processedImageFilenames = [];
+const publicDirectory = path.join(__dirname, 'public');
+app.use(express.static(publicDirectory));
+
+const imagesDirectory = path.join(__dirname, 'public/images');
 
 // Add express.json() middleware to parse request bodies as JSON
 app.use(express.json());
@@ -83,10 +87,7 @@ app.post('/submitIdentification', async (req, res) => {
 
 
 
-const publicDirectory = path.join(__dirname, 'public');
-app.use(express.static(publicDirectory));
 
-const imagesDirectory = path.join(__dirname, 'public/images');
 
 
 const pool = mysql.createPool({
