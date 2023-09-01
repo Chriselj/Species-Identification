@@ -86,7 +86,7 @@ app.post('/submitIdentification', async (req, res) => {
 const publicDirectory = path.join(__dirname, 'public');
 app.use(express.static(publicDirectory));
 
-const imagesDirectory = path.join(__dirname, 'images');
+const imagesDirectory = path.join(__dirname, 'public/images');
 
 
 const pool = mysql.createPool({
